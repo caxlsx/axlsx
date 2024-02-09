@@ -1,6 +1,7 @@
 CHANGELOG
 ---------
 - **Unreleased**
+  - [PR #350](https://github.com/caxlsx/caxlsx/pull/350) Add package-level encryption and password protection
   - [PR #316](https://github.com/caxlsx/caxlsx/pull/316) Prevent camelization of hyperlink locations
   - [PR #312](https://github.com/caxlsx/caxlsx/pull/312) Added 2D/flat PieChart drawing
   - [PR #317](https://github.com/caxlsx/caxlsx/pull/317) Apply style for columns without defining cells

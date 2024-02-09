@@ -10,4 +10,6 @@ end
 require 'test/unit'
 require "timecop"
 require 'webmock/test_unit'
+# require 'rspec/mocks/minitest_integration'
+require 'ooxml_crypt' if RUBY_ENGINE == 'ruby'
 require "axlsx"

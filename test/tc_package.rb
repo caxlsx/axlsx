@@ -182,6 +182,44 @@ class TestPackage < Test::Unit::TestCase
     File.delete(@fname)
   end
 
+  def test_serialize_with_password
+    return unless RUBY_ENGINE == 'ruby'
+
+    password = 'abc123'
+    @package.serialize(@fname, password: password)
+
+    decrypted_fname = 'axlsx_test_serialization_decrypted.xlsx'
+    assert_nothing_raised { OoxmlCrypt.decrypt_file(@fname, password, decrypted_fname) }
+    assert_zip_file_matches_package(decrypted_fname, @package)
+    assert_created_with_rubyzip(decrypted_fname, @package)
+
+    File.delete(@fname)
+    File.delete(decrypted_fname)
+  end
+
+  def test_serialization_with_password_and_zip_command
+    return unless RUBY_ENGINE == 'ruby'
+
+    fname = "#{Dir.tmpdir}/#{@fname}"
+    password = 'abc123'
+    @package.serialize(fname, zip_command: 'zip', password: password)
+
+    decrypted_fname = 'axlsx_test_serialization_decrypted.xlsx'
+    assert_nothing_raised { OoxmlCrypt.decrypt_file(fname, password, decrypted_fname) }
+    assert_zip_file_matches_package(decrypted_fname, @package)
+    assert_created_with_zip_command(decrypted_fname, @package)
+
+    File.delete(fname)
+    File.delete(decrypted_fname)
+  end
+
+  # def test_serialize_with_password_no_ooxml_crypt
+  #   hide_const('OoxmlCrypt')
+  #   assert_raises(RuntimeError, 'Axlsx encryption requires ooxml_crypt gem') do
+  #     @package.to_stream(password: 'abc123')
+  #   end
+  # end
+
   def assert_zip_file_matches_package(fname, package)
     zf = Zip::File.open(fname)
     package.send(:parts).each { |part| zf.get_entry(part[:entry]) }
@@ -352,8 +390,20 @@ class TestPackage < Test::Unit::TestCase
     assert_equal 1, wb.styles.style_index.count
   end
 
-  def test_encrypt
-    # this is no where near close to ready yet
-    refute(@package.encrypt('your_mom.xlsxl', 'has a password'))
+  def test_to_stream_with_password
+    return unless RUBY_ENGINE == 'ruby'
+
+    password = 'abc123'
+    stream = @package.to_stream(password: password)
+
+    assert_kind_of(StringIO, stream)
+    assert_nothing_raised { OoxmlCrypt.decrypt(stream.read, password) }
   end
+
+  # def test_to_stream_with_password_no_ooxml_crypt
+  #   hide_const('OoxmlCrypt')
+  #   assert_raises(RuntimeError, 'Axlsx encryption requires ooxml_crypt gem') do
+  #     @package.to_stream(password: 'abc123')
+  #   end
+  # end
 end

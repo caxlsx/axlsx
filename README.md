@@ -51,20 +51,21 @@ cell level input data validation.
 
 15. Support for page margins and print options
 
-16. Support for password and non password based sheet protection.
+16. Support for workbook-level encryption and password protection (requires [ooxml_crypt](https://github.com/teamsimplepay/ooxml_crypt) gem which only supports MRI Ruby.)
 
-17. First stage interoperability support for GoogleDocs, LibreOffice,
-and Numbers
+17. Support for sheet-level password and non-password protection.
 
-18. Support for defined names, which gives you repeated header rows for printing.
+18. First stage interoperability support for GoogleDocs, LibreOffice, and Numbers.
 
-19. Data labels for charts as well as series color customization.
+19. Support for defined names, which gives you repeated header rows for printing.
 
-20. Support for sheet headers and footers
+20. Data labels for charts as well as series color customization.
 
-21. Pivot Tables
+21. Support for sheet headers and footers
 
-22. Page Breaks
+22. Pivot Tables
+
+23. Page Breaks
 
 
 ## Install
@@ -121,6 +122,8 @@ Currently the following additional gems are available:
   * Provides a `.axlsx` renderer to Rails so you can move all your spreadsheet code from your controller into view files.
 - [activeadmin-caxlsx](https://github.com/caxlsx/activeadmin-caxlsx)
   * An Active Admin plugin that includes DSL to create downloadable reports.
+- [ooxml_crypt](https://github.com/teamsimplepay/ooxml_crypt)
+  * Required to enable workbook encryption and password protection.
 
 ## Security
 
