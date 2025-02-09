@@ -40,12 +40,17 @@ module Axlsx
        :show_leader_lines].each do |attr|
         send(:"#{attr}=", false)
       end
+      self.label_rotation = 0
     end
 
     # The chart type that is using this data labels instance.
     # This affects the xml output as not all chart types support the
     # same data label attributes.
     attr_reader :chart_type
+
+    # specifies how the degree of label rotation
+    # @return [Integer]
+    attr_reader :label_rotation
 
     # The position of the data labels in the chart
     # @see d_lbl_pos= for a list of allowed values
@@ -69,11 +74,23 @@ module Axlsx
       @d_lbl_pos = label_position
     end
 
+    # Specify the degree of label rotation to apply to labels
+    # default 0
+    def label_rotation=(v)
+      Axlsx.validate_int(v)
+      adjusted = v.to_i * 60000
+      Axlsx.validate_angle(adjusted)
+      @label_rotation = adjusted
+    end
+
     # serializes the data labels
     # @return [String]
     def to_xml_string(str = +'')
       validate_attributes_for_chart_type
       str << '<c:dLbls>'
+
+      str << '<c:txPr><a:bodyPr rot="' << label_rotation.to_s << '"/><a:lstStyle/><a:p><a:pPr><a:defRPr/></a:pPr><a:endParaRPr/></a:p></c:txPr>'
+
       instance_vals = Axlsx.instance_values_for(self)
       %w(d_lbl_pos show_legend_key show_val show_cat_name show_ser_name show_percent show_bubble_size show_leader_lines).each do |key|
         next unless instance_vals.key?(key) && !instance_vals[key].nil?
