@@ -8,10 +8,10 @@ group :development, :test do
   gem 'yard'
 
   if RUBY_VERSION >= '2.7'
-    gem 'rubocop', '1.71.2'
-    gem 'rubocop-minitest', '0.36.0'
+    gem 'rubocop', '1.72.1'
+    gem 'rubocop-minitest', '0.37.1'
     gem 'rubocop-packaging', '0.5.2'
-    gem 'rubocop-performance', '1.23.1'
+    gem 'rubocop-performance', '1.24.0'
   end
 end
 
